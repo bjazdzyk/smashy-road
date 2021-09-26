@@ -44,15 +44,32 @@ controls.update();
 
 const loop=()=>{
 	requestAnimationFrame(loop)
+  if(keys["KeyW"]){
+    CAR.position.x += 0.5
+  }
+
   //update controls
   let cPos = CAR.position
-  camera.position.set(cPos.x+10, cPos.y+14, cPos.z+10)
+  camera.position.set(cPos.x+8, cPos.y+10, cPos.z+8)
   controls.target.set(...CAR.position.toArray());
 	controls.update();
 
   //renderer
 	renderer.render(scene, camera)
 }
+//events
+let keys = {}
+document.addEventListener('keydown', keyDown);
+document.addEventListener('keyup', keyUp);
+function keyDown(e) {
+  keys[e.code] = true
+  console.log(e.code + "down");
+}
+function keyUp(e) {
+  keys[e.code] = null
+  console.log(e.code + "up");
+}
+
 //start game
 loop()
 
