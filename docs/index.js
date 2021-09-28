@@ -9,6 +9,8 @@ const deg_to_rad=(deg)=>{
   var pi = Math.PI;
   return deg / (180/pi);
 }
+const ctg=(x)=> { return 1 / Math.tan(x); }
+
 //scene & camera & renderer
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
@@ -37,20 +39,39 @@ CAR.add(car_line)
 scene.add(CAR);
 CAR.position.set(0, 1, 0)
 
-//background & controls
+//background & orbit controls
 scene.background = new THREE.Color( 0xa7faf2 );
 const controls = new OrbitControls( camera, renderer.domElement );
 controls.update();
 
+//physics
+let DIR = 0
+let dirX
+let dirZ
+
+camera.position.set(10, 30, 10)
 const loop=()=>{
 	requestAnimationFrame(loop)
-  if(keys["KeyW"]){
-    CAR.position.x += 0.5
+
+  //controls
+  if(keys["ArrowLeft"]){
+    DIR += 5
   }
+  if(keys["ArrowRight"]){
+    DIR -= 5
+  }
+
+
+  //update car direction
+  CAR.rotation.y = deg_to_rad(DIR)
+  dirZ = -Math.sin(deg_to_rad(DIR))
+  dirX = Math.cos(deg_to_rad(DIR))
+  CAR.position.x += dirX
+  CAR.position.z += dirZ
 
   //update controls
   let cPos = CAR.position
-  camera.position.set(cPos.x+8, cPos.y+10, cPos.z+8)
+  //camera.position.set(cPos.x+8, cPos.y+10, cPos.z+8)
   controls.target.set(...CAR.position.toArray());
 	controls.update();
 
