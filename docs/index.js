@@ -48,30 +48,44 @@ controls.update();
 let DIR = 0
 let dirX
 let dirZ
+let FX = 0
+let FZ = 0
 
-camera.position.set(10, 30, 10)
+//camera.position.set(10, 30, 10)
 const loop=()=>{
 	requestAnimationFrame(loop)
+
+  //update car direction
+  dirZ = -Math.sin(deg_to_rad(DIR))
+  dirX = Math.cos(deg_to_rad(DIR))
+
+
 
   //controls
   if(keys["ArrowLeft"]){
     DIR += 5
+    CAR.rotation.y = deg_to_rad(DIR)
   }
   if(keys["ArrowRight"]){
     DIR -= 5
+    CAR.rotation.y = deg_to_rad(DIR)
+  }
+  if(keys["ArrowUp"]){
+    FX += dirX
+    FZ += dirZ
+    CAR.position.x += FX * 0.01
+    CAR.position.z += FZ * 0.01
+  }else{
+    CAR.position.x += FX * 0.01
+    CAR.position.z += FZ * 0.01
   }
 
-
-  //update car direction
-  CAR.rotation.y = deg_to_rad(DIR)
-  dirZ = -Math.sin(deg_to_rad(DIR))
-  dirX = Math.cos(deg_to_rad(DIR))
-  CAR.position.x += dirX
-  CAR.position.z += dirZ
+  
+  
 
   //update controls
   let cPos = CAR.position
-  //camera.position.set(cPos.x+8, cPos.y+10, cPos.z+8)
+  camera.position.set(cPos.x+10, cPos.y+15, cPos.z+10)
   controls.target.set(...CAR.position.toArray());
 	controls.update();
 
