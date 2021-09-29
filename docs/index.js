@@ -80,10 +80,8 @@ const loop=()=>{
     CAR.position.z += FZ * 0.01
   }
 
-  
-  
 
-  //update controls
+  //update orbit controls
   let cPos = CAR.position
   camera.position.set(cPos.x+10, cPos.y+15, cPos.z+10)
   controls.target.set(...CAR.position.toArray());
