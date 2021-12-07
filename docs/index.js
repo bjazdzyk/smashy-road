@@ -48,6 +48,8 @@ controls.update();
 let DIR = 0
 let dirX
 let dirZ
+let VX = 0
+let VZ = 0
 let FX = 0
 let FZ = 0
 
@@ -71,13 +73,22 @@ const loop=()=>{
     CAR.rotation.y = deg_to_rad(DIR)
   }
   if(keys["ArrowUp"]){
-    FX += dirX
-    FZ += dirZ
-    CAR.position.x += FX * 0.01
-    CAR.position.z += FZ * 0.01
+    VX += dirX
+    VZ += dirZ
+    CAR.position.x += VX * 0.01
+    CAR.position.z += VZ * 0.01
   }else{
-    CAR.position.x += FX * 0.01
-    CAR.position.z += FZ * 0.01
+    if(VX !== 0){
+      FX = VX/Math.sqrt(VX*VX + VZ*VZ)
+      VX -= FX
+      CAR.position.x += VX * 0.01
+    }
+    if(VZ !== 0){
+      FZ = VZ/Math.sqrt(VX*VX + VZ*VZ)
+      VZ -= FZ
+      CAR.position.z += VZ * 0.01
+    }
+  
   }
 
 
@@ -96,11 +107,9 @@ document.addEventListener('keydown', keyDown);
 document.addEventListener('keyup', keyUp);
 function keyDown(e) {
   keys[e.code] = true
-  console.log(e.code + "down");
 }
 function keyUp(e) {
   keys[e.code] = null
-  console.log(e.code + "up");
 }
 
 //start game
